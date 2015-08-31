@@ -34,8 +34,8 @@
  * Verify that HSE_VALUE is defined
  */
 
-#if !defined(HSE_VALUE)
-#error "Please define HSE_VALUE to the frequency of your external oscillator in hertz"
+#if !defined(HSE_VALUE) && !defined(HSI_VALUE)
+#error "Please define HSE_VALUE or HSI_VALUE to the frequency of your external/internal oscillator in hertz"
 #endif
 
 
@@ -44,7 +44,7 @@
  */
 
 #undef STM32PLUS_BUILD
-#define STM32PLUS_BUILD 0x040100
+#define STM32PLUS_BUILD 0x040003
 
 
 /**

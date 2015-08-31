@@ -1,6 +1,6 @@
 # Top level SConstruct file for stm32plus and all the examples.
 """
-Usage: scons mode=<MODE> mcu=<MCU> hse=<HSE> [float=hard]
+Usage: scons mode=<MODE> mcu=<MCU> (hse=<HSE> / hsi=<HSI>) [float=hard] [examples=no]
 
   <MODE>: debug/fast/small.
     debug = -O0
@@ -13,7 +13,7 @@ Usage: scons mode=<MODE> mcu=<MCU> hse=<HSE> [float=hard]
     f1hd   = STM32F103HD series.
     f1cle  = STM32F107 series.
     f1md   = STM32100 medium density series.
-    f1mdvl = STM32100 medium density value line series.
+    f1mdvl = STM32100 Medium Density Value Line series.
     f4     = STM32F407/f417 series (maintained for backwards compatibility)
     f405   = STM32F405
     f407   = STM32F407
@@ -24,16 +24,19 @@ Usage: scons mode=<MODE> mcu=<MCU> hse=<HSE> [float=hard]
     f429   = STM32F429
     f439   = STM32F439
 
-  <HSE>:
-    Your external oscillator speed in Hz. Some of the ST standard peripheral
-    library code uses the HSE_VALUE #define that we set here. If you're using
-    the HSI and don't have an HSE connected then just supply a default
-    of 8000000.
+  <HSE or HSI>:
+    Your external (HSE) or internal (HSI) oscillator speed in Hz. Some of the ST standard
+    peripheral library code uses the HSE_VALUE / HSI_VALUE #define that we set here. Select
+    either the 'hse' or 'hsi' option, not both.
 
   [float=hard]:
     Optional flag for an F4 build that will cause the hardware FPU to be
     used for floating point operations. Requires the "GNU Tools for ARM Embedded
     Processors" toolchain. Will not work with Code Sourcery Lite.
+
+  [examples=no]:
+    Optional flag that allows you to build just the library without the examples. The
+    default is to build the library and the examples.
 
   Examples:
     scons mode=debug mcu=f1hd hse=8000000                       // debug / f1hd / 8MHz
@@ -110,12 +113,31 @@ INSTALLDIR_PREFIX=ARGUMENTS.get('INSTALLDIR_PREFIX') or "stm32plus-"+VERSION
 
 mode = ARGUMENTS.get('mode')
 mcu = ARGUMENTS.get('mcu')
-hse = ARGUMENTS.get('hse')
-float = None
 
-if not hse or not hse.isdigit():
+# hse or hsi
+
+osc = ARGUMENTS.get('hse')
+if osc:
+  osc_type = "e"
+  osc_def = "HSE_VALUE"
+else:
+  osc = ARGUMENTS.get('hsi')
+  if osc:
+    osc_type = "i"
+    osc_def = "HSI_VALUE"
+  else:
+    print __doc__
+    Exit(1)
+
+if not osc.isdigit():
   print __doc__
   Exit(1)
+
+# examples off?
+
+build_examples = ARGUMENTS.get('examples')
+
+float = None
 
 # set up build environment and pull in OS environment variables
 
@@ -137,7 +159,7 @@ env.Append(CPPPATH=["#lib/include","#lib/include/stl","#lib"])
 
 env.Replace(CCFLAGS=["-Wall","-Werror","-ffunction-sections","-fdata-sections","-fno-exceptions","-mthumb","-gdwarf-2","-pipe"])
 env.Replace(CXXFLAGS=["-Wextra","-pedantic-errors","-fno-rtti","-std=gnu++0x","-fno-threadsafe-statics"])
-env.Append(CCFLAGS="-DHSE_VALUE="+hse)
+env.Append(CCFLAGS="-D"+osc_def+"="+osc)
 env.Append(LINKFLAGS=["-Xlinker","--gc-sections","-mthumb","-g3","-gdwarf-2"])
 
 # add on the MCU-specific definitions
@@ -197,22 +219,23 @@ else:
 
 print "stm32plus build version is "+VERSION
 
-systemprefix=mode+"-"+mcu+"-"+hse
+systemprefix=mode+"-"+mcu+"-"+osc+osc_type
 if float:
   systemprefix += "-"+float
   
 # launch SConscript for the main library
 
 libstm32plus=SConscript("lib/SConscript",
-                        exports=["mode","mcu","hse","env","systemprefix","INSTALLDIR","INSTALLDIR_PREFIX","VERSION"],
+                        exports=["mode","mcu","osc","osc_type","osc_def","env","systemprefix","INSTALLDIR","INSTALLDIR_PREFIX","VERSION"],
                         variant_dir="lib/build/"+systemprefix,
                         duplicate=0)
 
 env.Append(LIBS=[libstm32plus])
 
 # launch SConscript for the examples
-if mcu!="f1md":
-  SConscript("examples/SConscript",exports=["mode","mcu","hse","env","systemprefix","INSTALLDIR","INSTALLDIR_PREFIX","VERSION"])
+
+if build_examples!="no":
+  SConscript("examples/SConscript",exports=["mode","mcu","osc","osc_type","osc_def","env","systemprefix","INSTALLDIR","INSTALLDIR_PREFIX","VERSION"])
 
 # build the CMake helper
 
