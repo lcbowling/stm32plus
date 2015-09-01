@@ -13,7 +13,7 @@ namespace stm32plus {
    * in the ST peripheral library between devices.
    */
 
-  class CAN : public CANDeviceIo {
+  class CAN {
 
     protected:
       CAN_TypeDef *_peripheralAddress;
@@ -101,7 +101,7 @@ namespace stm32plus {
       if(hasError())
         return false;
 
-    receiveData(_peripheralAddress, CAN_FIFO0, msg);
+    CAN_Receive(_peripheralAddress, CAN_FIFO0, msg);
     return true;
   }
 
@@ -131,7 +131,7 @@ namespace stm32plus {
 
     // send the byte
 
-    TransmitMailbox = sendData(_peripheralAddress, msg);
+    TransmitMailbox = CAN_Transmit(_peripheralAddress, &msg);
     return true;
   }
 
