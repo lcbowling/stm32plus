@@ -44,6 +44,7 @@
 #include "fwlib/f1/stdperiph/inc/stm32f10x_flash.h"
 #include "fwlib/f1/stdperiph/inc/stm32f10x_cec.h"
 #include "fwlib/f1/stdperiph/inc/stm32f10x_wwdg.h"
+#include "fwlib/f1/stdperiph/inc/stm32f10x_can.h"
 
 #elif defined(STM32PLUS_F4)
 
@@ -70,6 +71,7 @@
 #include "fwlib/f4/stdperiph/inc/stm32f4xx_flash.h"
 #include "fwlib/f4/stdperiph/inc/stm32f4xx_wwdg.h"
 #include "fwlib/f4/stdperiph/inc/stm32f4xx_syscfg.h"
+#include "fwlib/f4/stdperiph/inc/stm32f4xx_can.h"
 
 #elif defined(STM32PLUS_F0_51)
 
@@ -91,6 +93,7 @@
 #include "fwlib/f0/stdperiph/inc/stm32f0xx_tim.h"
 #include "fwlib/f0/stdperiph/inc/stm32f0xx_wwdg.h"
 #include "fwlib/f0/stdperiph/inc/stm32f0xx_usart.h"
+#include "fwlib/f0/stdperiph/inc/stm32f0xx_can.h"
 
 #elif defined(STM32PLUS_F0_30)
 
@@ -111,6 +114,7 @@
 #include "fwlib/f0/stdperiph/inc/stm32f0xx_tim.h"
 #include "fwlib/f0/stdperiph/inc/stm32f0xx_wwdg.h"
 #include "fwlib/f0/stdperiph/inc/stm32f0xx_usart.h"
+#include "fwlib/f0/stdperiph/inc/stm32f0xx_can.h"
 
 #else
 

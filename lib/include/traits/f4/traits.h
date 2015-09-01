@@ -309,7 +309,7 @@ namespace stm32plus {
   typedef PeripheralTraits<PERIPHERAL_TIMER14> Timer14PeripheralTraits;
 
 #endif
-  
+
   template<>
   struct PeripheralTraits<PERIPHERAL_USART1> {
     enum {
@@ -386,4 +386,22 @@ namespace stm32plus {
     };
   };
   typedef PeripheralTraits<PERIPHERAL_USART6> Usart6PeripheralTraits;
+
+  template<>
+  struct PeripheralTraits<PERIPHERAL_CAN1> {
+    enum {
+      GPIO_SPEED = GPIO_Speed_50MHz,
+      PERIPHERAL_BASE = CAN1_BASE,
+    };
+  };
+  typedef PeripheralTraits<PERIPHERAL_CAN1> Can1PeripheralTraits;
+
+  template<>
+  struct PeripheralTraits<PERIPHERAL_CAN2> {
+    enum {
+      GPIO_SPEED = GPIO_Speed_50MHz,
+      PERIPHERAL_BASE = CAN2_BASE,
+    };
+  };
+  typedef PeripheralTraits<PERIPHERAL_CAN2> Can2PeripheralTraits;
 }
