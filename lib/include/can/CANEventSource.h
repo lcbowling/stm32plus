@@ -15,7 +15,8 @@ namespace stm32plus {
 
   enum class CANEventType : uint8_t {
 	  EVENT_RECEIVE_RX0,
-	  EVENT_RECEIVE_RX1
+	  EVENT_RECEIVE_RX1,
+	  EVENT_TRANSMIT_TME
   };
 
 
