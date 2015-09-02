@@ -3,16 +3,6 @@
 
 namespace stm32plus {
 
-
-  /**
-   * Base class for all SPI peripherals. Supports synchronous sending and receiving of
-   * data encoded into 8 or 16-bit values. The SPI peripheral on the F0 can be initialised
-   * to send/receive bit streams that are no a multiple of 8.
-   *
-   * This class inherits from the very small device specifc IO class that handles the differences
-   * in the ST peripheral library between devices.
-   */
-
   class CAN {
 
     protected:
@@ -27,6 +17,9 @@ namespace stm32plus {
       CAN(CAN_TypeDef *address);
 
     public:
+
+      void filterInit(CAN_FilterInitTypeDef &CAN_FilterInitStructure) const;
+
       bool readyToReceive() const;
 
       bool receive(CanRxMsg* msg) const;
@@ -45,7 +38,7 @@ namespace stm32plus {
 
   /**
    * Constructor
-   * @param[in] address The peripheral address, e.g. SPI1
+   * @param[in] address The peripheral address, e.g. CAN1
    * @param[in] nssPort The chip select port
    * @param[in] nssPin The chip select pin - we control it manually
    */
@@ -56,8 +49,8 @@ namespace stm32plus {
 
 
   /**
-   * Cast this class to the SPI peripheral address.
-   * @return The SPI peripheral address.
+   * Cast this class to the CAN peripheral address.
+   * @return The CAN peripheral address.
    */
 
   inline CAN::operator CAN_TypeDef *() const {
@@ -79,6 +72,9 @@ namespace stm32plus {
     return false;
   }
 
+  inline void CAN::filterInit(CAN_FilterInitTypeDef &CAN_FilterInitStructure) const {
+	  return CAN_FilterInit(&CAN_FilterInitStructure);
+  }
 
   /**
    * Check if the peripheral is ready to receive
@@ -92,7 +88,6 @@ namespace stm32plus {
 
   /**
    * Read a byte from the peripheral
-   * @param byte[out] The byte read out
    */
 
   inline bool CAN::receive(CanRxMsg* msg) const {
