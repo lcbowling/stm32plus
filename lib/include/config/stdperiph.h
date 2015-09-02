@@ -93,7 +93,6 @@
 #include "fwlib/f0/stdperiph/inc/stm32f0xx_tim.h"
 #include "fwlib/f0/stdperiph/inc/stm32f0xx_wwdg.h"
 #include "fwlib/f0/stdperiph/inc/stm32f0xx_usart.h"
-#include "fwlib/f0/stdperiph/inc/stm32f0xx_can.h"
 
 #elif defined(STM32PLUS_F0_30)
 
@@ -114,7 +113,6 @@
 #include "fwlib/f0/stdperiph/inc/stm32f0xx_tim.h"
 #include "fwlib/f0/stdperiph/inc/stm32f0xx_wwdg.h"
 #include "fwlib/f0/stdperiph/inc/stm32f0xx_usart.h"
-#include "fwlib/f0/stdperiph/inc/stm32f0xx_can.h"
 
 #else
 

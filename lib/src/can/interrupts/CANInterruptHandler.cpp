@@ -6,7 +6,7 @@
 
 #include "config/stm32plus.h"
 
-#if defined(STM32PLUS_F0)
+#if defined(STM32PLUS_F0) and defined(STM32PLUS_F0_91)
 
 #include "config/can.h"
 

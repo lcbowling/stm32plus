@@ -1,5 +1,6 @@
 #pragma once
 
+#if !defined(STM32PLUS_F0) or defined(STM32PLUS_F0_91)
 /**
  * @file
  * This file provides access to the I2C peripheral. All the peripherals are exposed with multiple pin configurations
@@ -15,7 +16,7 @@
 
 // device-specific pin initialiser
 
-#if defined(STM32PLUS_F0)
+#if defined(STM32PLUS_F0) and defined(STM32PLUS_F0_91)
 
 #include "can/f0/CANAlternateFunctionMapper.h"
 #include "can/f0/CANPinInitialiser.h"
@@ -39,7 +40,7 @@
 
 #include "can/features/CANFeatureBase.h"
 
-#if defined(STM32PLUS_F0)
+#if defined(STM32PLUS_F0) and defined(STM32PLUS_F0_91)
 #include "can/features/f0/CANInterruptFeature.h"
 #elif defined(STM32PLUS_F4)
 #include "can/features/f4/CANInterruptFeature.h"
@@ -49,7 +50,7 @@
 
 // generic peripheral includes
 
-#if defined(STM32PLUS_F0)
+#if defined(STM32PLUS_F0) and defined(STM32PLUS_F0_91)
   #include "can/f0/CAN.h"
 #elif defined(STM32PLUS_F4)
   #include "can/f4/CAN1.h"
@@ -61,10 +62,11 @@
 
 // enable all interrupts
 
+#define USE_CAN_INTERRUPT
 #define USE_CAN1_INTERRUPT
 #define USE_CAN2_INTERRUPT
 
 // device specific includes
 
 
-
+#endif
