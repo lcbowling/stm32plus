@@ -15,14 +15,19 @@
 
 // device-specific pin initialiser
 
-#if defined(STM32PLUS_F4)
+#if defined(STM32PLUS_F0)
+
+#include "can/f0/CANAlternateFunctionMapper.h"
+#include "can/f0/CANPinInitialiser.h"
+
+#elif defined(STM32PLUS_F4)
 
   #include "can/f4/CANAlternateFunctionMapper.h"
   #include "can/f4/CANPinInitialiser.h"
 
+#elif defined(STM32PLUS_F1)
+  #include "can/f1/CANPinInitialiser.h"
 #endif
-
-#include "can/CANDeviceIo.h"
 
 // generic peripheral includes
 
@@ -33,11 +38,26 @@
 // generic feature includes
 
 #include "can/features/CANFeatureBase.h"
-#include "can/features/CANInterruptFeature.h"
+
+#if defined(STM32PLUS_F0)
+#include "can/features/f0/CANInterruptFeature.h"
+#elif defined(STM32PLUS_F4)
+#include "can/features/f4/CANInterruptFeature.h"
+#elif defined(STM32PLUS_F1)
+#include "can/features/f1/CANInterruptFeature.h"
+#endif
 
 // generic peripheral includes
 
-#include "can/CAN1.h"
+#if defined(STM32PLUS_F0)
+  #include "can/f0/CAN.h"
+#elif defined(STM32PLUS_F4)
+  #include "can/f4/CAN1.h"
+  #include "can/f4/CAN2.h"
+#elif defined(STM32PLUS_F1)
+  #include "can/f1/CAN1.h"
+  #include "can/f1/CAN2.h"
+#endif
 
 // enable all interrupts
 

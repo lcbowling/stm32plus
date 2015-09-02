@@ -6,6 +6,7 @@
 
 #pragma once
 
+#if defined(STM32PLUS_F1_CL)
 
 namespace stm32plus {
 
@@ -80,3 +81,5 @@ namespace stm32plus {
   };
 
 }
+
+#endif

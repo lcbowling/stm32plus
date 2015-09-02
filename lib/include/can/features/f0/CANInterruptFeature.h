@@ -4,16 +4,7 @@
 /*
  * Forward declare the IRQ handler names
  */
-#if defined(STM32PLUS_F1) and !defined(STM32PLUS_F1_CL)
-  extern "C" void USB_LP_CAN1_RX0_IRQHandler();
-  extern "C" void USB_HP_CAN1_TX_IRQHandler();
-#else
-  extern "C" void CAN1_RX0_IRQHandler(void);
-  extern "C" void CAN1_TX_IRQHandler(void);
-#endif
-
-extern "C" void CAN2_RX0_IRQHandler();
-extern "C" void CAN2_TX_IRQHandler();
+extern "C" void CEC_CAN_IRQHandler();
 
 
 namespace stm32plus {
@@ -30,11 +21,9 @@ namespace stm32plus {
     private:
       typedef void (*FPTR)();         // this trick will force the linker to include the ISR
       static FPTR _forceLinkageRX0;
-      static FPTR _forceLinkageTX;
 
     public:
       static void enableRX(uint8_t priority,uint8_t subPriority);
-      static void enableTX(uint8_t priority,uint8_t subPriority);
   };
 
 
@@ -56,7 +45,7 @@ namespace stm32plus {
       static CANEventSource *_canInstance;
 
     public:
-      CANInterruptFeature(CAN& can);
+      CANInterruptFeature(_CAN& can);
       ~CANInterruptFeature();
 
       void setNvicPriorities(uint8_t priority,uint8_t subPriority=0);
@@ -88,7 +77,7 @@ namespace stm32plus {
    */
 
   template<uint8_t TCANNumber>
-  inline CANInterruptFeature<TCANNumber>::CANInterruptFeature(CAN& can)
+  inline CANInterruptFeature<TCANNumber>::CANInterruptFeature(_CAN& can)
     : CANFeatureBase(can) {
     _interruptMask=0;
     _nvicPriority=_nvicSubPriority=0;
@@ -132,7 +121,6 @@ namespace stm32plus {
 
     _interruptMask|=interruptMask;
 
-    CANInterruptFeatureEnabler<TCANNumber>::enableTX(_nvicPriority,_nvicSubPriority);
     CANInterruptFeatureEnabler<TCANNumber>::enableRX(_nvicPriority,_nvicSubPriority);
 
     CAN_ITConfig(_can, interruptMask, ENABLE);
@@ -161,46 +149,14 @@ namespace stm32plus {
 	  CAN_ClearITPendingBit(_can,interruptMask);
   }
 
-
   /**
-   * Enabler specialisation, CAN 1
+   * Enabler specialisation, CAN
    */
 
   template<>
   inline void CANInterruptFeatureEnabler<1>::enableRX(uint8_t priority,uint8_t subPriority) {
-#if defined(STM32PLUS_F1) and !defined(STM32PLUS_F1_CL)
-      _forceLinkageRX0=&USB_LP_CAN1_RX0_IRQHandler;
-      Nvic::configureIrq(USB_LP_CAN1_RX0_IRQn,ENABLE,priority,subPriority);
-#else
-      _forceLinkageRX0=&CAN1_RX0_IRQHandler;
-      Nvic::configureIrq(CAN1_RX0_IRQn,ENABLE,priority,subPriority);
-#endif
-
+      _forceLinkageRX0=&CEC_CAN_IRQHandler;
+      Nvic::configureIrq(CEC_CAN_IRQn,ENABLE,priority,subPriority);
   }
 
-  template<>
-  inline void CANInterruptFeatureEnabler<1>::enableTX(uint8_t priority,uint8_t subPriority) {
-#if defined(STM32PLUS_F1) and !defined(STM32PLUS_F1_CL)
-	  _forceLinkageTX=&USB_HP_CAN1_TX_IRQHandler;
-	  Nvic::configureIrq(USB_HP_CAN1_TX_IRQn,ENABLE,priority,subPriority);
-#else
-      _forceLinkageTX=&CAN1_TX_IRQHandler;
-      Nvic::configureIrq(CAN1_TX_IRQn,ENABLE,priority,subPriority);
-#endif
-  }
-
-#if (defined(STM32PLUS_F1) and defined(STM32PLUS_F1_CL)) and !defined(STM32PLUS_F0)
-  template<>
-  inline void CANInterruptFeatureEnabler<2>::enableRX(uint8_t priority,uint8_t subPriority) {
-      _forceLinkageRX0=&CAN2_RX0_IRQHandler;
-      Nvic::configureIrq(CAN2_RX0_IRQn,ENABLE,priority,subPriority);
-  }
-
-  template<>
-  inline void CANInterruptFeatureEnabler<2>::enableTX(uint8_t priority,uint8_t subPriority) {
-      _forceLinkageTX=&CAN2_TX_IRQHandler;
-      Nvic::configureIrq(CAN2_TX_IRQn,ENABLE,priority,subPriority);
-
-  }
-#endif
 }

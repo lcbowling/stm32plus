@@ -16,11 +16,11 @@ namespace stm32plus {
 
   class CANFeatureBase {
     protected:
-      CAN& _can;
+      _CAN& _can;
 
     public:
-      CANFeatureBase(CAN& can);
-      operator CAN&();
+      CANFeatureBase(_CAN& can);
+      operator _CAN&();
   };
 
 
@@ -29,7 +29,7 @@ namespace stm32plus {
    * @param can
    */
 
-  inline CANFeatureBase::CANFeatureBase(CAN& can)
+  inline CANFeatureBase::CANFeatureBase(_CAN& can)
     : _can(can) {
   }
 
@@ -38,7 +38,7 @@ namespace stm32plus {
    * Cast to CAN reference
    */
 
-  inline CANFeatureBase::operator CAN&() {
+  inline CANFeatureBase::operator _CAN&() {
     return _can;
   }
 }

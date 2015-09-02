@@ -3,7 +3,7 @@
 
 namespace stm32plus {
 
-  class CAN {
+  class _CAN {
 
     protected:
       CAN_TypeDef *_peripheralAddress;
@@ -14,7 +14,7 @@ namespace stm32plus {
       };
 
     protected:
-      CAN(CAN_TypeDef *address);
+      _CAN(CAN_TypeDef *address);
 
     public:
 
@@ -43,7 +43,7 @@ namespace stm32plus {
    * @param[in] nssPin The chip select pin - we control it manually
    */
 
-  inline CAN::CAN(CAN_TypeDef *address){
+  inline _CAN::_CAN(CAN_TypeDef *address){
     _peripheralAddress=address;
   }
 
@@ -53,7 +53,7 @@ namespace stm32plus {
    * @return The CAN peripheral address.
    */
 
-  inline CAN::operator CAN_TypeDef *() const {
+  inline _CAN::operator CAN_TypeDef *() const {
     return _peripheralAddress;
   }
 
@@ -62,7 +62,7 @@ namespace stm32plus {
    * Check if the device has an error status
    */
 
-  inline bool CAN::hasError() const {
+  inline bool _CAN::hasError() const {
 
 	  uint8_t status;
 
@@ -72,7 +72,7 @@ namespace stm32plus {
     return false;
   }
 
-  inline void CAN::filterInit(CAN_FilterInitTypeDef &CAN_FilterInitStructure) const {
+  inline void _CAN::filterInit(CAN_FilterInitTypeDef &CAN_FilterInitStructure) const {
 	  return CAN_FilterInit(&CAN_FilterInitStructure);
   }
 
@@ -81,7 +81,7 @@ namespace stm32plus {
    * @return true if it's ready
    */
 
-  inline bool CAN::readyToReceive() const {
+  inline bool _CAN::readyToReceive() const {
     return !!CAN_MessagePending(_peripheralAddress, CAN_FIFO0);
   }
 
@@ -90,7 +90,7 @@ namespace stm32plus {
    * Read a byte from the peripheral
    */
 
-  inline bool CAN::receive(CanRxMsg* msg) const {
+  inline bool _CAN::receive(CanRxMsg* msg) const {
 
     while(!readyToReceive())
       if(hasError())
@@ -106,7 +106,7 @@ namespace stm32plus {
    * @return true if ready to send
    */
 
-  inline bool CAN::readyToSend(uint8_t TransmitMailbox) const {
+  inline bool _CAN::readyToSend(uint8_t TransmitMailbox) const {
     return (CAN_TransmitStatus(_peripheralAddress, TransmitMailbox) == CANTXOK);
   }
 
@@ -117,7 +117,7 @@ namespace stm32plus {
    * @return true if it worked, false on error
    */
 
-  inline bool CAN::send(CanTxMsg &msg, uint8_t &TransmitMailbox) const {
+  inline bool _CAN::send(CanTxMsg &msg, uint8_t &TransmitMailbox) const {
 
     // wait for ready to send
 
@@ -136,11 +136,11 @@ namespace stm32plus {
    * idle when the last word written to the TX register has been shifted out to the bus.
    */
 
-  inline void CAN::waitForIdle(uint8_t TransmitMailbox) const {
+  inline void _CAN::waitForIdle(uint8_t TransmitMailbox) const {
 	  while(CAN_TransmitStatus(_peripheralAddress, TransmitMailbox)  !=  CANTXOK);
   }
 
-  inline void CAN::deInit() const {
+  inline void _CAN::deInit() const {
 	  CAN_DeInit(_peripheralAddress);
   }
 }

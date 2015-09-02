@@ -14,12 +14,12 @@ namespace stm32plus {
    */
 
   template<class TPinPackage,class... Features>
-  struct CAN1_Custom : CANPeripheral<TPinPackage,PERIPHERAL_CAN1>,
+  struct CAN_Custom : CANPeripheral<TPinPackage,PERIPHERAL_CAN>,
                        Features... {
 
-    CAN1_Custom(const typename CANPeripheral<TPinPackage,PERIPHERAL_CAN1>::Parameters& params)
-      : CANPeripheral<TPinPackage,PERIPHERAL_CAN1>(params),
-        Features(static_cast<CAN&>(*this))... {
+    CAN_Custom(const typename CANPeripheral<TPinPackage,PERIPHERAL_CAN>::Parameters& params)
+      : CANPeripheral<TPinPackage,PERIPHERAL_CAN>(params),
+        Features(static_cast<_CAN&>(*this))... {
     }
   };
 
@@ -28,7 +28,7 @@ namespace stm32plus {
    * Default pin package:
    */
 
-  struct CAN1DefaultPinPackage {
+  struct CANDefaultPinPackage {
     enum {
       Port_RX = GPIOA_BASE,
       Port_TX = GPIOA_BASE,
@@ -44,17 +44,17 @@ namespace stm32plus {
    */
 
   template<class... Features>
-  struct Can1 : CANPeripheral<CAN1DefaultPinPackage,PERIPHERAL_CAN1>,
+  struct Can : CANPeripheral<CANDefaultPinPackage,PERIPHERAL_CAN>,
                 Features... {
 
-    Can1(const Parameters& params)
-      : CANPeripheral<CAN1DefaultPinPackage,PERIPHERAL_CAN1>(params),
-        Features(static_cast<CAN&>(*this))... {
+    Can(const Parameters& params)
+      : CANPeripheral<CANDefaultPinPackage,PERIPHERAL_CAN>(params),
+        Features(static_cast<_CAN&>(*this))... {
     }
   };
 
 
-  struct CAN1Remap1PinPackage {
+  struct CANRemap1PinPackage {
     enum {
       Port_RX = GPIOB_BASE,
       Port_TX = GPIOB_BASE,
@@ -70,16 +70,16 @@ namespace stm32plus {
    */
 
   template<class... Features>
-  struct Can1_Remap1 : CANPeripheral<CAN1Remap1PinPackage,PERIPHERAL_CAN1>,
+  struct Can_Remap1 : CANPeripheral<CANRemap1PinPackage,PERIPHERAL_CAN>,
                        Features... {
 
-    Can1_Remap1(const Parameters& params)
-      : CANPeripheral<CAN1Remap1PinPackage,PERIPHERAL_CAN1>(params),
-        Features(static_cast<CAN&>(*this))... {
+    Can_Remap1(const Parameters& params)
+      : CANPeripheral<CANRemap1PinPackage,PERIPHERAL_CAN>(params),
+        Features(static_cast<_CAN&>(*this))... {
     }
   };
 
-  struct CAN1Remap2PinPackage {
+  struct CANRemap2PinPackage {
     enum {
       Port_RX = GPIOD_BASE,
       Port_TX = GPIOD_BASE,
@@ -95,12 +95,12 @@ namespace stm32plus {
    */
 
   template<class... Features>
-  struct Can1_Remap2 : CANPeripheral<CAN1Remap2PinPackage,PERIPHERAL_CAN1>,
+  struct Can_Remap2 : CANPeripheral<CANRemap2PinPackage,PERIPHERAL_CAN>,
                        Features... {
 
-    Can1_Remap2(const Parameters& params)
-      : CANPeripheral<CAN1Remap2PinPackage,PERIPHERAL_CAN1>(params),
-        Features(static_cast<CAN&>(*this))... {
+    Can_Remap2(const Parameters& params)
+      : CANPeripheral<CANRemap2PinPackage,PERIPHERAL_CAN>(params),
+        Features(static_cast<_CAN&>(*this))... {
     }
   };
 }

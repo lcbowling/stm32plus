@@ -164,4 +164,20 @@ namespace stm32plus {
       RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2,DISABLE);
     }
   };
+
+  /*
+   * CAN
+   */
+
+  template<>
+  struct ClockControl<PERIPHERAL_CAN> {
+
+    static void On() {
+      RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN,ENABLE);
+    }
+
+    static void Off() {
+      RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN,DISABLE);
+    }
+  };
 }

@@ -14,7 +14,7 @@ namespace stm32plus {
    */
 
   template<class TPinPackage,PeripheralName TPeripheralName>
-  class CANPeripheral : public CAN {
+  class CANPeripheral : public _CAN {
 
     public:
 
@@ -54,7 +54,7 @@ namespace stm32plus {
 
   template<class TPinPackage,PeripheralName TPeripheralName>
   inline CANPeripheral<TPinPackage,TPeripheralName>::CANPeripheral(const Parameters& params)
-    : CAN((CAN_TypeDef *)PeripheralTraits<TPeripheralName>::PERIPHERAL_BASE) {
+    : _CAN((CAN_TypeDef *)PeripheralTraits<TPeripheralName>::PERIPHERAL_BASE) {
 
     CAN_InitTypeDef init;
 
