@@ -13,7 +13,7 @@ Usage: scons mode=<MODE> mcu=<MCU> (hse=<HSE> / hsi=<HSI>) [float=hard] [example
     f1hd   = STM32F103HD series.
     f1cle  = STM32F107 series.
     f1md   = STM32100 medium density series.
-    f1mdvl = STM32100 Medium Density Value Line series.
+    f1mdvl = STM32100 medium density value line series.
     f4     = STM32F407/f417 series (maintained for backwards compatibility)
     f405   = STM32F405
     f407   = STM32F407
@@ -235,7 +235,7 @@ env.Append(LIBS=[libstm32plus])
 # launch SConscript for the examples
 
 if build_examples!="no":
-  SConscript("examples/SConscript",exports=["mode","mcu","osc","osc_type","osc_def","env","systemprefix","INSTALLDIR","INSTALLDIR_PREFIX","VERSION"])
+    SConscript("examples/SConscript",exports=["mode","mcu","osc","osc_type","osc_def","env","systemprefix","INSTALLDIR","INSTALLDIR_PREFIX","VERSION"])
 
 # build the CMake helper
 
